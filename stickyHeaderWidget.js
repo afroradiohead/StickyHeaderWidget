@@ -2,25 +2,44 @@ $(document).ready(function(){
 	var $window = $(window),
 		$body = $("body"),
 		$stickyHeader = $("#sticky-header"),
-		stickyOffsetTop = 0
+		stickyHeaderPosition = 0
 		resizeTimeoutId = null;
 
 	function determineStickyPosition() {
-		$body.removeClass("sticky");
-		stickyOffsetTop = $stickyHeader.offset().top;		
+		var isSticky = checkIfSticky();
+
+		if(isSticky) toggleSticky(false); //turn sticky off if needed
+		
+		stickyHeaderPosition = getStickyHeaderPosition(); //calculate stickyHeader height
+		
+		if(isSticky) toggleSticky(true); //turn sticky on if needed
 	}
 
 	function processStickiness(){
-		var scrollTop = $window.scrollTop();
-		var _isSticky;
-
-		//todo - add or remove class based on a varible
-		if(scrollTop >= stickyOffsetTop)
-			$body.addClass("sticky");
+		if(getWindowScrollPosition() >= stickyHeaderPosition)
+			toggleSticky(true);
 		else
-			$body.removeClass("sticky");
+			toggleSticky(false);
 	}
 
+	function getStickyHeaderPosition() {
+		return $stickyHeader.offset().top;
+	}
+
+	function getWindowScrollPosition() {
+		return $window.scrollTop();
+	}
+
+	function checkIfSticky(){
+		return $body.hasClass("sticky");
+	}
+
+	function toggleSticky(isOn){
+		$body.toggleClass("sticky", isOn);
+	}
+
+
+	/*== Events== */
 	$window.on("scroll", function(e){
 		processStickiness();
 	});
