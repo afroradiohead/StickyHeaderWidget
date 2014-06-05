@@ -12,7 +12,9 @@ $(document).ready(function(){
 
 	function processStickiness(){
 		var scrollTop = $window.scrollTop();
+		var _isSticky;
 
+		//todo - add or remove class based on a varible
 		if(scrollTop >= stickyOffsetTop)
 			$body.addClass("sticky");
 		else
@@ -33,6 +35,9 @@ $(document).ready(function(){
 		}, 10);
 	});	
 
-	determineStickyPosition();
-	processStickiness();
+	$window.load(function() {
+		determineStickyPosition();
+		processStickiness();
+	});
+
 });
