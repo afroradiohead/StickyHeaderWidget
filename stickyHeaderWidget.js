@@ -40,23 +40,26 @@ $(document).ready(function(){
 
 
 	/*== Events== */
-	$window.on("scroll", function(e){
-		processStickiness();
-	});
+	
+	if($stickyHeader.length) {
+		$window.on("scroll", function(e){
+			processStickiness();
+		});
 
-	$window.on("resize", function(){
-		clearTimeout(resizeTimeoutId);
+		$window.on("resize", function(){
+			clearTimeout(resizeTimeoutId);
 
-		//decreases cycles for performance
-		resizeTimeoutId = setTimeout(function(){
+			//decreases cycles for performance
+			resizeTimeoutId = setTimeout(function(){
+				determineStickyPosition();
+				processStickiness();
+			}, 10);
+		});	
+
+		$window.load(function() {
 			determineStickyPosition();
 			processStickiness();
-		}, 10);
-	});	
-
-	$window.load(function() {
-		determineStickyPosition();
-		processStickiness();
-	});
+		});		
+	}
 
 });
